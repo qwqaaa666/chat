@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 角色群聊</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2>角色设定</h2>
+            <div id="character-list" class="character-list">
+            </div>
+            <button class="add-character-btn">添加新角色</button>
+        </aside>
+
+        <main class="main-content">
+            <header class="chat-header">
+                <h1>AI 群聊室</h1>
+            </header>
+            <div id="chat-window" class="chat-window">
+            </div>
+            <footer class="chat-footer">
+                <div class="collapsible-container">
+                    <h3 class="collapsible-header" id="api-config-header">API 配置 (点击展开/折叠)</h3>
+                    <div id="api-config-body" class="collapsible-body">
+                        <input type="text" id="api-url-input" class="user-input" placeholder="输入 API 推理端点 URL...">
+                        <input type="text" id="api-model-input" class="user-input" placeholder="输入模型 ID...">
+                        <input type="password" id="api-key-input" class="user-input" placeholder="输入 Hugging Face Token...">
+                    </div>
+                </div>
+
+                <input type="text" id="user-input" class="user-input" placeholder="输入你的消息，加入对话...">
+                <button id="send-btn" class="send-btn">发送</button>
+            </footer>
+        </main>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>添加新角色</h2>
+            <form id="add-character-form">
+                <label for="char-name">角色名称:</label>
+                <div class="input-with-button">
+                    <input type="text" id="char-name" required>
+                    <button type="button" id="search-btn">搜索设定</button>
+                </div>
+                
+                <label for="char-prompt">性格设定 (Prompt):</label>
+                <textarea id="char-prompt" required></textarea>
+
+                <label for="char-model">模型 ID (可选):</label>
+                <input type="text" id="char-model" placeholder="留空则使用全局模型">
+                
+                <button type="submit">保存角色</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

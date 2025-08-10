@@ -1,0 +1,341 @@
+:root {
+    --bg-color-start: #121212;
+    --bg-color-end: #000;
+    --card-bg-color: rgba(255, 255, 255, 0.08);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --text-color: #f0f0f0;
+    --primary-color: #00bcd4;
+    --secondary-color: #ff4081;
+    --transition-speed: 0.3s;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text-color);
+    background: linear-gradient(135deg, var(--bg-color-start), var(--bg-color-end));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    width: 90vw;
+    height: 90vh;
+    max-width: 1400px;
+    max-height: 900px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+}
+
+.sidebar, .main-content {
+    padding: 2rem;
+}
+
+.sidebar {
+    width: 30%;
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.character-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+.character-card {
+    background: var(--card-bg-color);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.character-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: transparent;
+    color: var(--secondary-color);
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color var(--transition-speed);
+}
+
+.delete-btn:hover {
+    color: #fff;
+}
+
+.main-content {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    text-align: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.chat-header h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.chat-window {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem 0;
+}
+
+.message {
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+    max-width: 70%;
+    word-wrap: break-word;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeIn var(--transition-speed) ease-out;
+}
+
+.message.ai {
+    background-color: var(--primary-color);
+    color: #fff;
+    margin-right: auto;
+    border-bottom-left-radius: 5px;
+}
+
+.message.user {
+    background-color: var(--secondary-color);
+    color: #fff;
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.user-input {
+    flex-grow: 1;
+    background: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 20px;
+    padding: 0.8rem 1.5rem;
+    outline: none;
+    transition: all var(--transition-speed);
+}
+
+#api-key-input, #api-url-input, #api-model-input {
+    flex-basis: 100%;
+}
+
+.user-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(0, 188, 212, 0.5);
+}
+
+.send-btn, .add-character-btn {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 20px;
+    margin-left: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.send-btn:hover, .add-character-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.collapsible-container {
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.collapsible-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background var(--transition-speed);
+}
+
+.collapsible-header::after {
+    content: '+';
+    font-size: 1.5rem;
+    transition: transform var(--transition-speed);
+}
+
+.collapsible-header.active::after {
+    content: '-';
+    transform: rotate(180deg);
+}
+
+.collapsible-body {
+    padding: 15px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 模态框样式 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: var(--card-bg-color);
+    margin: 5% auto;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    width: 80%;
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.close-btn {
+    color: var(--text-color);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.modal-content h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+#add-character-form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+#add-character-form input,
+#add-character-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    font-family: inherit;
+    resize: vertical;
+}
+
+#add-character-form button {
+    margin-top: 20px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform var(--transition-speed);
+}
+
+#add-character-form button:hover {
+    transform: scale(1.05);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+    }
+    .sidebar, .main-content {
+        width: 100%;
+        padding: 1rem;
+    }
+    .sidebar {
+        height: 30vh;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .main-content {
+        height: 70vh;
+    }
+    .chat-footer {
+        flex-direction: column;
+    }
+    .send-btn, .add-character-btn {
+        margin-left: 0;
+        width: 100%;
+    }
+}
