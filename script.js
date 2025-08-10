@@ -19,9 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const collapsibleHeader = document.getElementById('api-config-header');
     const collapsibleBody = document.getElementById('api-config-body');
 
-    // 默认 API 配置 - Hugging Face Inference API，最可靠的公共模型
-    const DEFAULT_API_URL = 'https://api-inference.huggingface.co/models/';
-    const DEFAULT_MODEL_ID = 'mistralai/Mistral-7B-Instruct-v0.2';
+    // 默认 API 配置 - 已更换为零一万物 (01.AI) API
+    // 这个 API 在国内访问稳定，且兼容 OpenAI 格式
+    const DEFAULT_API_URL = 'https://api.lingyunchat.com/api/v1/chat';
+    const DEFAULT_MODEL_ID = '01-ai/Yi-34B-Chat';
     
     // 设置默认值
     apiUrlInput.value = DEFAULT_API_URL;
@@ -33,31 +34,27 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     /**
-     * 发送 API 请求到 Hugging Face Inference API。
-     * 该函数使用 Hugging Face 的原生请求格式，而非 OpenAI 兼容格式。
+     * 发送 API 请求到兼容 OpenAI 格式的 API。
+     * 该函数使用 messages 数组，适用于 01.AI、OpenAI 等服务。
      */
     async function getAIResponse(prompt, apiKey, modelId, endpointUrl) {
         if (!endpointUrl || !apiKey || !modelId) {
             throw new Error("API URL、模型 ID 和 Token 必须填写。");
         }
         
-        const fullUrl = `${endpointUrl}${modelId}`;
         const headers = {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${apiKey}`
         };
 
         const body = {
-            inputs: prompt,
-            parameters: {
-                max_new_tokens: 200,
-                temperature: 0.7,
-                do_sample: true,
-                return_full_text: false // 确保只返回新生成的文本
-            }
+            model: modelId,
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 1000, 
+            temperature: 0.7,
         };
 
-        const response = await fetch(fullUrl, {
+        const response = await fetch(endpointUrl, {
             headers: headers,
             method: 'POST',
             body: JSON.stringify(body),
@@ -69,7 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const result = await response.json();
-        return result?.[0]?.generated_text || "未获取到有效回复。";
+        // 解析兼容 OpenAI 格式的返回结果
+        return result?.choices?.[0]?.message?.content || "未获取到有效回复。";
     }
 
     async function searchCharacterInfo(characterName) {
